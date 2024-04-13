@@ -10,6 +10,9 @@ const manifest = defineManifest(async (env) => ({
   name: `${env.mode === 'development' ? '[Dev] ' : ''}CSS詳細度バトラー`,
   description: 'ページ上のCSSセレクタが詳細度で熱い戦いを繰り広げます⚔️',
   version,
+  background: {
+    service_worker: 'background/index.ts',
+  },
   content_scripts: [
     {
       matches: ['http://*/*', 'https://*/*'],
@@ -17,6 +20,19 @@ const manifest = defineManifest(async (env) => ({
     },
   ],
   host_permissions: ['<all_urls>'],
+  options_ui: {
+    page: 'options/options.html',
+    open_in_tab: true,
+  },
+  web_accessible_resources: [
+    {
+      resources: [
+        // this file is web accessible; it supports HMR b/c it's declared in `rollupOptions.input`
+        'welcome/welcome.html',
+      ],
+      matches: ['<all_urls>'],
+    },
+  ],
   action: {
     default_popup: 'popup/popup.html',
     default_icon: {
