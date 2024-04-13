@@ -16,7 +16,7 @@ const manifest = defineManifest(async (env) => ({
   content_scripts: [
     {
       matches: ['http://*/*', 'https://*/*', 'file:///*'],
-      js: ['content/index.tsx'],
+      js: ['content/index.ts'],
     },
   ],
   host_permissions: ['<all_urls>'],

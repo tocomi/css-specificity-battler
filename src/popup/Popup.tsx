@@ -1,13 +1,11 @@
-import { Counter } from '../app/features/counter';
+import { Button } from '../app/ui/Button';
 
 const Popup = () => {
-  document.body.className = 'w-[30rem] h-[15rem]';
-
+  document.body.className = 'w-[50rem] h-[30rem]';
   return (
-    <>
-      <div className="flex justify-center mt-2 text-base">Popup Counter</div>
-      <Counter />
-    </>
+    <div className="p-2">
+      <Button onClick={() => undefined}>getElements</Button>
+    </div>
   );
 };
 
