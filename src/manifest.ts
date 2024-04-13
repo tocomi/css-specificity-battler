@@ -7,12 +7,12 @@ import { version } from '../package.json';
 
 const manifest = defineManifest(async (env) => ({
   manifest_version: 3,
-  name: `${env.mode === 'development' ? '[Dev] ' : ''}Browser Extension TypeScript & React Starter`,
-  description: 'Browser Extension, TypeScript, React',
+  name: `${env.mode === 'development' ? '[Dev] ' : ''}CSS詳細度バトラー`,
+  description: 'ページ上のCSSセレクタが詳細度で熱い戦いを繰り広げます⚔️',
   version,
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', 'file:///*'],
+      matches: ['http://*/*', 'https://*/*'],
       js: ['content/index.ts'],
     },
   ],
