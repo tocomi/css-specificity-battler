@@ -11,7 +11,7 @@ const Popup = () => {
     setIsLoading(true);
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (!tabs[0].id) return;
-      chrome.tabs.sendMessage(tabs[0].id, { type: 'getCssSelector' }, (response: string[]) => {
+      chrome.tabs.sendMessage(tabs[0].id, { type: 'getCssSelectors' }, (response: string[]) => {
         setCssSelectors(response);
         setIsLoading(false);
       });

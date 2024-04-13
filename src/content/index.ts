@@ -3,34 +3,35 @@ import 'webextension-polyfill';
 import 'construct-style-sheets-polyfill';
 import { proxyStore } from '../app/proxyStore';
 
-const getCssSelector = () => {
-  const allElements = document.querySelectorAll('*');
-  const cssRules: string[] = [];
+declare global {
+  interface CSSRule {
+    selectorText: string;
+  }
+}
 
-  allElements.forEach((element) => {
-    Array.from(document.styleSheets).forEach((styleSheet) => {
-      try {
-        Array.from(styleSheet.cssRules).forEach((rule) => {
-          // @ts-expect-error
-          if (element.matches(rule.selectorText)) {
-            // @ts-expect-error
-            cssRules.push(rule.selectorText);
-          }
-        });
-      } catch (e) {
-        console.log('Accessing the stylesheet: ', e);
-      }
-    });
+/**
+ * Get all CSS selectors from the current page.
+ */
+const getCssSelectors = (): string[] => {
+  const cssSelectors = new Set<string>();
+  Array.from(document.styleSheets).forEach((styleSheet) => {
+    try {
+      Array.from(styleSheet.cssRules).forEach((rule) => {
+        cssSelectors.add(rule.selectorText);
+      });
+    } catch (e) {
+      // エラーになるのは仕方ないので無視する
+    }
   });
 
-  return cssRules;
+  return Array.from(cssSelectors);
 };
 
 proxyStore.ready().then(() => {
   chrome.runtime.onMessage.addListener(
-    (request: { type: 'getCssSelector' }, _sender, sendResponse) => {
-      if (request.type === 'getCssSelector') {
-        sendResponse(getCssSelector());
+    (request: { type: 'getCssSelectors' }, _sender, sendResponse) => {
+      if (request.type === 'getCssSelectors') {
+        sendResponse(getCssSelectors());
       }
     }
   );
