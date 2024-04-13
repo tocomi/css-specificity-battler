@@ -1,20 +1,9 @@
-import { memo, useCallback, useState } from 'react';
+import { memo } from 'react';
 import { Button } from '../../ui';
+import { useGetCssSelector } from '../css-selector';
 
 export const BattleScreen = memo(function BattleScreen() {
-  const [cssSelectors, setCssSelectors] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const getCssSelector = useCallback(() => {
-    setIsLoading(true);
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0].id) return;
-      chrome.tabs.sendMessage(tabs[0].id, { type: 'getCssSelectors' }, (response: string[]) => {
-        setCssSelectors(response);
-        setIsLoading(false);
-      });
-    });
-  }, []);
+  const { cssSelectors, isLoading, getCssSelector } = useGetCssSelector();
 
   return (
     <div className="p-2">
