@@ -1,1 +1,1 @@
-export * from './battle-screen';
+export * from './main-screen';
