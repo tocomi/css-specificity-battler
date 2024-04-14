@@ -1,6 +1,6 @@
 declare global {
   interface CSSRule {
-    selectorText: string;
+    selectorText: string | null;
   }
 }
 
@@ -12,7 +12,9 @@ export const getCssSelectors = (): string[] => {
   Array.from(document.styleSheets).forEach((styleSheet) => {
     try {
       Array.from(styleSheet.cssRules).forEach((rule) => {
-        cssSelectors.add(rule.selectorText);
+        if (rule.selectorText) {
+          cssSelectors.add(rule.selectorText);
+        }
       });
     } catch (e) {
       // cross-origin でエラーが出るのは仕方ないので無視する
