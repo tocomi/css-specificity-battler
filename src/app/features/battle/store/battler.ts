@@ -1,7 +1,7 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { SelectorWithSpecificity } from '../../css-selector/types';
+import { Battler } from '../types';
 
-const battlersAtom = atom<SelectorWithSpecificity[]>([]);
+const battlersAtom = atom<Battler[]>([]);
 
 export const useBattlers = () => {
   const battlers = useAtomValue(battlersAtom);
@@ -11,4 +11,10 @@ export const useBattlers = () => {
 export const useRegisterBattlers = () => {
   const setBattlers = useSetAtom(battlersAtom);
   return setBattlers;
+};
+
+export const useRandomeBattler = () => {
+  const battlers = useBattlers();
+  const randomIndex = Math.floor(Math.random() * battlers.length);
+  return battlers[randomIndex];
 };
