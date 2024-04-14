@@ -7,7 +7,7 @@ type Props = {
 
 export const Button: FC<Props> = memo(function Button({ onClick, children }: Props) {
   return (
-    <button className="py-2 px-4 bg-sky-600 rounded-xl text-white" onClick={onClick}>
+    <button className="py-2 px-4 bg-sky-600 rounded-xl text-white text-lg" onClick={onClick}>
       {children}
     </button>
   );
