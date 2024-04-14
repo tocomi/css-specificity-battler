@@ -1,12 +1,13 @@
 import { memo, useCallback, useState } from 'react';
 import { Button } from '../../../ui';
 import { useGetCssSelector } from '../../css-selector';
-import { useRegisterBattlers, useUpdateStage } from '../store';
+import { useUpdateStage } from '../store';
+import { useInitializeBattler } from '../hooks';
 
 export const GameStart = memo(function GameStart() {
   const { isLoading, getCssSelector } = useGetCssSelector();
   const updateStage = useUpdateStage();
-  const registerBattlers = useRegisterBattlers();
+  const initializeBattler = useInitializeBattler();
   const [canStartGame, setCanStartGame] = useState<boolean>(true);
 
   const startGame = useCallback(async () => {
@@ -15,9 +16,9 @@ export const GameStart = memo(function GameStart() {
       setCanStartGame(false);
       return;
     }
-    registerBattlers(battlers);
+    initializeBattler(battlers);
     updateStage('battle');
-  }, [getCssSelector, registerBattlers, updateStage]);
+  }, [getCssSelector, initializeBattler, updateStage]);
 
   return (
     <div className="h-[100%] flex flex-col gap-8 justify-center items-center">

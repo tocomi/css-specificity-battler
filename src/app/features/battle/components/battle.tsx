@@ -1,13 +1,14 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { useBattlers, useRandomeBattler } from '../store';
+import { useBattlers, useEnemy, usePlayer, useUpdateStage } from '../store';
 import { Battler as BattlerType, Result as ResultType } from '../types';
 import { Button } from '../../../ui';
 import { getWinner } from '../utils';
+import { useSetNewEnemy } from '../hooks';
 
 export const Battle = memo(function Battle() {
   const battlers = useBattlers();
-  const player = useRandomeBattler();
-  const enemy = useRandomeBattler();
+  const player = usePlayer();
+  const enemy = useEnemy();
 
   const [result, setResult] = useState<ResultType>('beforeBattle');
 
@@ -39,6 +40,10 @@ export const Battle = memo(function Battle() {
     setResult('draw');
   }, [winner]);
 
+  const resetResult = useCallback(() => {
+    setResult('beforeBattle');
+  }, []);
+
   return (
     <div className="flex flex-col justify-center gap-4">
       <h1 className="text-2xl font-bold">{`このページの野生のセレクター数: ${battlers.length}`}</h1>
@@ -46,8 +51,8 @@ export const Battle = memo(function Battle() {
         <Battler battler={player} type="player" />
         <Battler battler={enemy} type="enemy" />
       </div>
-      <Commands onFight={fight} onEscape={escape} />
-      <Result result={result} />
+      {result === 'beforeBattle' && <Commands onFight={fight} onEscape={escape} />}
+      {result !== 'beforeBattle' && <Result result={result} resetResult={resetResult} />}
     </div>
   );
 });
@@ -89,13 +94,37 @@ const Commands = memo(function Command({
   );
 });
 
-const Result = memo(function Result({ result }: { result: ResultType }) {
+export const Result = memo(function Result({
+  result,
+  resetResult,
+}: {
+  result: ResultType;
+  resetResult: () => void;
+}) {
+  const updateStage = useUpdateStage();
+  const setNewEnemy = useSetNewEnemy();
+
+  const retry = useCallback(() => {
+    resetResult();
+    updateStage('opening');
+  }, [updateStage, resetResult]);
+
+  const next = useCallback(() => {
+    setNewEnemy();
+    resetResult();
+  }, [setNewEnemy, resetResult]);
+
   if (result === 'beforeBattle') {
     return null;
   }
   return (
-    <div className="flex justify-center gap-8">
-      <p>{result}</p>
+    <div className="flex flex-col items-center gap-8">
+      <p className="text-xl">{result}</p>
+      {result === 'win' || result === 'draw' ? (
+        <Button onClick={next}>続ける</Button>
+      ) : (
+        <Button onClick={retry}>もう一回！</Button>
+      )}
     </div>
   );
 });
