@@ -21,7 +21,7 @@ export const GameStart = memo(function GameStart() {
   }, [getCssSelector, initializeBattler, updateStage]);
 
   return (
-    <div className="h-[100%] flex flex-col gap-8 justify-center items-center">
+    <div className="h-full flex flex-col gap-8 justify-center items-center">
       <h1 className="text-4xl font-bold">👨‍🎨 CSS詳細度バトラー ⚔️</h1>
       <Button onClick={startGame}>ゲームを始める！</Button>
       {isLoading ? (
