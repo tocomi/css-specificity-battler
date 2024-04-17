@@ -17,7 +17,7 @@ export const GameStart = memo(function GameStart() {
       return;
     }
     initializeBattler(battlers);
-    updateStage('battle');
+    updateStage('selectBuddy');
   }, [getCssSelector, initializeBattler, updateStage]);
 
   return (

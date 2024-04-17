@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
 import { Battler } from '../types';
-import { useSetBattlers, useSetPlayer, useSetEnemy, useBattlers } from '../store';
-import { getBattlerRandom } from '../utils/getBattlerRandom';
+import { useSetBattlers, useSetEnemy, useBattlers, useSetCandidates } from '../store';
+import { getBattlerRandom, getCandidates } from '../utils/getBattlerRandom';
 
 export const useInitializeBattler = () => {
   const setBattlers = useSetBattlers();
-  const setPlayer = useSetPlayer();
+  const setCandidates = useSetCandidates();
   const setEnemy = useSetEnemy();
 
   return useCallback(
     (battlers: Battler[]) => {
       setBattlers(battlers);
-      setPlayer(getBattlerRandom(battlers));
+      setCandidates(getCandidates(battlers));
       setEnemy(getBattlerRandom(battlers));
     },
-    [setBattlers, setPlayer, setEnemy]
+    [setBattlers, setCandidates, setEnemy]
   );
 };
 

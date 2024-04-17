@@ -11,6 +11,7 @@ const dummyBattler: Battler = {
 };
 
 const battlersAtom = atom<Battler[]>([]);
+const candidatesAtom = atom<Battler[]>([]);
 const playerAtom = atom<Battler>(dummyBattler);
 const enemyAtom = atom<Battler>(dummyBattler);
 
@@ -42,4 +43,14 @@ export const useSetPlayer = () => {
 export const useSetEnemy = () => {
   const setEnemy = useSetAtom(enemyAtom);
   return setEnemy;
+};
+
+export const useCandidates = () => {
+  const candidates = useAtomValue(candidatesAtom);
+  return candidates;
+};
+
+export const useSetCandidates = () => {
+  const setCandidates = useSetAtom(candidatesAtom);
+  return setCandidates;
 };
