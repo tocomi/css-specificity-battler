@@ -20,10 +20,6 @@ const manifest = defineManifest(async (env) => ({
     },
   ],
   host_permissions: ['<all_urls>'],
-  options_ui: {
-    page: 'options/options.html',
-    open_in_tab: true,
-  },
   action: {
     default_popup: 'popup/popup.html',
     default_icon: {
